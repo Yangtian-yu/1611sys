@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String   @id @default(uuid())
+  username   String   @unique
+  password   String
+  email      String
+  role       Role     @default(EMPLOYEE)
+  orderIndex Int      @map("order_index")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+enum Role {
+  ADMIN
+  EMPLOYEE
+}
+
+model DutySchedule {
+  id            String   @id @default(uuid())
+  weekStartDate DateTime @map("week_start_date")
+  dutyUserIds   String[] @map("duty_user_ids")
+  isManual      Boolean  @default(false) @map("is_manual")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@map("duty_schedules")
+}
