@@ -41,7 +41,7 @@ services:
         condition: service_healthy
     networks:
       - duty-network
-    command: sh -c "npx prisma migrate deploy && npx prisma db seed && npm run start:prod"
+    command: sh -c "pnpm start:prod"
 
   # 前端服务
   frontend:
