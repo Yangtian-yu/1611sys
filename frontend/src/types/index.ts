@@ -12,6 +12,7 @@ export interface DutyUser {
 
 export interface DutySchedule {
   weekStartDate: string;
+  dutyDate: string;
   dutyUsers: DutyUser[];
 }
 

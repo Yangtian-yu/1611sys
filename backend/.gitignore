@@ -52,3 +52,6 @@ prisma/migrations/*
 # Misc
 *.tsbuildinfo
 .eslintcache
+
+# Mock data (local only)
+mock-data.json
