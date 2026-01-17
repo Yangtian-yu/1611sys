@@ -1,23 +1,23 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { login as apiLogin } from "@/api/auth";
-import type { User, LoginRequest } from "@/types";
+import { login as apiLogin, type LoginRequest } from "@/api/auth";
+import type { User } from "@/types";
 
 export const useAuthStore = defineStore("auth", () => {
   const token = ref<string | null>(localStorage.getItem("token"));
   const user = ref<User | null>(
     localStorage.getItem("user")
       ? JSON.parse(localStorage.getItem("user")!)
-      : null
+      : null,
   );
 
   const login = async (credentials: LoginRequest) => {
     const res = await apiLogin(credentials);
-    token.value = res.data.data.accessToken;
-    user.value = res.data.data.user;
+    token.value = res.accessToken;
+    user.value = res.user;
 
-    localStorage.setItem("token", res.data.data.accessToken);
-    localStorage.setItem("user", JSON.stringify(res.data.data.user));
+    localStorage.setItem("token", res.accessToken);
+    localStorage.setItem("user", JSON.stringify(res.user));
   };
 
   const logout = () => {

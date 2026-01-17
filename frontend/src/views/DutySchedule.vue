@@ -38,10 +38,9 @@ const formatDateWithWeek = (dateStr: string) => {
 const fetchDuty = async () => {
   loading.value = true;
   try {
-    const res = await getDutySchedule();
-    dutyData.value = res.data.data;
+    dutyData.value = await getDutySchedule();
   } catch (error: any) {
-    ElMessage.error("获取值日信息失败");
+    // 错误已在 http 层统一处理，这里可选择性添加额外逻辑
     console.error(error);
   } finally {
     loading.value = false;
@@ -197,10 +196,8 @@ onMounted(() => {
 .grid-pattern {
   position: absolute;
   inset: 0;
-  background-image: linear-gradient(
-      rgba(255, 255, 255, 0.02) 1px,
-      transparent 1px
-    ),
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
   background-size: 50px 50px;
   opacity: 0.5;

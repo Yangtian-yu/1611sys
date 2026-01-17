@@ -1,3 +1,9 @@
+/**
+ * 业务类型定义
+ */
+
+// ============ 用户相关 ============
+
 export interface User {
   id: string;
   username: string;
@@ -10,26 +16,14 @@ export interface DutyUser {
   email: string;
 }
 
+// ============ 值日相关 ============
+
 export interface DutySchedule {
   weekStartDate: string;
   dutyDate: string;
   dutyUsers: DutyUser[];
 }
 
-export interface LoginRequest {
-  username: string;
-  password: string;
-}
+// ============ 导出 API 类型 ============
 
-export interface LoginResponse {
-  success: boolean;
-  data: {
-    accessToken: string;
-    user: User;
-  };
-}
-
-export interface ApiResponse<T> {
-  success: boolean;
-  data: T;
-}
+export * from "./api";

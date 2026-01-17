@@ -7,8 +7,8 @@ import {
   deleteUser,
   resetPassword,
   type User,
-  type CreateUserData,
-  type UpdateUserData,
+  type CreateUserRequest,
+  type UpdateUserRequest,
 } from "@/api/user";
 import { ElMessage, ElMessageBox } from "element-plus";
 import Layout from "@/components/Layout.vue";
@@ -22,13 +22,13 @@ const editDialogVisible = ref(false);
 const resetPasswordDialogVisible = ref(false);
 
 // 表单数据
-const createForm = ref<CreateUserData>({
+const createForm = ref<CreateUserRequest>({
   username: "",
   password: "",
   email: "",
 });
 
-const editForm = ref<UpdateUserData>({
+const editForm = ref<UpdateUserRequest>({
   username: "",
   email: "",
 });
@@ -41,17 +41,16 @@ const currentEditUser = ref<User | null>(null);
 
 // 计算属性：员工列表（排除管理员）
 const employees = computed(() =>
-  users.value.filter((u) => u.role === "EMPLOYEE")
+  users.value.filter((u) => u.role === "EMPLOYEE"),
 );
 
 // 获取员工列表
 const fetchUsers = async () => {
   loading.value = true;
   try {
-    const res = await getUsers();
-    users.value = res.data.data;
+    users.value = await getUsers();
   } catch (error: any) {
-    ElMessage.error("获取员工列表失败");
+    // 错误已在 http 层统一处理
     console.error(error);
   } finally {
     loading.value = false;
@@ -123,7 +122,7 @@ const handleDelete = async (user: User) => {
         confirmButtonText: "确定删除",
         cancelButtonText: "取消",
         type: "warning",
-      }
+      },
     );
 
     await deleteUser(user.id);
@@ -155,7 +154,7 @@ const handleResetPassword = async () => {
   try {
     await resetPassword(
       currentEditUser.value.id,
-      resetPasswordForm.value.newPassword
+      resetPasswordForm.value.newPassword,
     );
     ElMessage.success("密码重置成功");
     resetPasswordDialogVisible.value = false;
@@ -172,7 +171,7 @@ const handleToggleActive = async (user: User) => {
     ElMessage.success(
       `${user.username} 已${
         user.isActive ? "恢复参与值日" : "设置为不参与值日"
-      }`
+      }`,
     );
   } catch (error: any) {
     ElMessage.error("操作失败");

@@ -1,52 +1,74 @@
-import client from "./client";
+/**
+ * 用户管理相关 API
+ */
+
+import { http } from "./http";
+
+// ============ 类型定义 ============
 
 export interface User {
-  id: number;
+  id: string;
   username: string;
   email: string;
-  role: string;
+  role: "ADMIN" | "EMPLOYEE";
   orderIndex: number;
   isActive: boolean;
   createdAt: string;
+  updatedAt?: string;
 }
 
-export interface CreateUserData {
+export interface CreateUserRequest {
   username: string;
   password: string;
   email: string;
 }
 
-export interface UpdateUserData {
+export interface UpdateUserRequest {
   username?: string;
   email?: string;
   isActive?: boolean;
 }
 
-export const getUsers = () =>
-  client.get<{ success: boolean; data: User[] }>("/users");
+// ============ API 方法 ============
 
-export const createUser = (data: CreateUserData) =>
-  client.post<{ success: boolean; data: User; message: string }>(
-    "/users",
-    data
-  );
+/**
+ * 获取所有用户
+ */
+export function getUsers(): Promise<User[]> {
+  return http.get<User[]>("/users");
+}
 
-export const updateUser = (id: number, data: UpdateUserData) =>
-  client.put<{ success: boolean; data: User; message: string }>(
-    `/users/${id}`,
-    data
-  );
+/**
+ * 创建用户
+ */
+export function createUser(data: CreateUserRequest): Promise<User> {
+  return http.post<User>("/users", data);
+}
 
-export const deleteUser = (id: number) =>
-  client.delete<{ success: boolean; message: string }>(`/users/${id}`);
+/**
+ * 更新用户
+ */
+export function updateUser(id: string, data: UpdateUserRequest): Promise<User> {
+  return http.put<User>(`/users/${id}`, data);
+}
 
-export const reorderUsers = (userIds: number[]) =>
-  client.put<{ success: boolean; message: string }>("/users/reorder/batch", {
-    userIds,
-  });
+/**
+ * 删除用户
+ */
+export function deleteUser(id: string): Promise<void> {
+  return http.delete<void>(`/users/${id}`);
+}
 
-export const resetPassword = (id: number, newPassword: string) =>
-  client.post<{ success: boolean; message: string }>(
-    `/users/${id}/reset-password`,
-    { newPassword }
-  );
+/**
+ * 批量重排序用户
+ */
+export function reorderUsers(userIds: string[]): Promise<void> {
+  return http.put<void>("/users/reorder/batch", { userIds });
+}
+
+/**
+ * 重置用户密码
+ */
+export function resetPassword(id: string, newPassword: string): Promise<void> {
+  return http.post<void>(`/users/${id}/reset-password`, { newPassword });
+}

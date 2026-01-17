@@ -1,17 +1,42 @@
-import apiClient from "./client";
-import type { LoginRequest, LoginResponse } from "@/types";
+/**
+ * 认证相关 API
+ */
 
-export const login = (data: LoginRequest) => {
-  return apiClient.post<LoginResponse>("/auth/login", data);
-};
+import { http } from "./http";
+import type { User } from "@/types";
 
-export interface ChangePasswordData {
+// ============ 请求类型 ============
+
+export interface LoginRequest {
+  username: string;
+  password: string;
+}
+
+export interface LoginResult {
+  accessToken: string;
+  user: User;
+}
+
+export interface ChangePasswordRequest {
   oldPassword: string;
   newPassword: string;
 }
 
-export const changePassword = (data: ChangePasswordData) =>
-  apiClient.post<{ success: boolean; message: string }>(
-    "/auth/change-password",
-    data
-  );
+// ============ API 方法 ============
+
+/**
+ * 用户登录
+ */
+export function login(data: LoginRequest): Promise<LoginResult> {
+  return http.post<LoginResult>("/auth/login", data, {
+    skipAuth: true,
+    showError: true,
+  });
+}
+
+/**
+ * 修改密码
+ */
+export function changePassword(data: ChangePasswordRequest): Promise<void> {
+  return http.post<void>("/auth/change-password", data);
+}

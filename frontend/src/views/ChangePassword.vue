@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { changePassword, type ChangePasswordData } from "@/api/auth";
+import { changePassword, type ChangePasswordRequest } from "@/api/auth";
 import { ElMessage } from "element-plus";
 import Layout from "@/components/Layout.vue";
 
-const form = ref<ChangePasswordData>({
+const form = ref<ChangePasswordRequest>({
   oldPassword: "",
   newPassword: "",
 });

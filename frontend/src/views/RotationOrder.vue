@@ -12,12 +12,12 @@ const usersListRef = ref<HTMLElement | null>(null);
 const fetchUsers = async () => {
   loading.value = true;
   try {
-    const res = await getUsers();
-    users.value = res.data.data
+    const data = await getUsers();
+    users.value = data
       .filter((u) => u.role === "EMPLOYEE")
       .sort((a, b) => (a.orderIndex || 0) - (b.orderIndex || 0));
   } catch (error: any) {
-    ElMessage.error("获取员工列表失败");
+    // 错误已在 http 层统一处理
   } finally {
     loading.value = false;
   }
@@ -43,7 +43,7 @@ const initSortable = () => {
       users.value.splice(newIndex, 0, movedItem);
 
       // 准备后端需要的数据格式 (只需 ID 数组)
-      const reorderData = users.value.map((user) => Number(user.id));
+      const reorderData = users.value.map((user) => user.id);
 
       try {
         await reorderUsers(reorderData);
