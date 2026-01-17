@@ -29,7 +29,7 @@ importers:
     devDependencies:
       '@vitejs/plugin-vue':
         specifier: ^5.0.0
-        version: 5.2.4(vite@5.4.21)(vue@3.5.26(typescript@5.9.3))
+        version: 5.2.4(vite@5.4.21(@types/node@20.19.30))(vue@3.5.26(typescript@5.9.3))
       autoprefixer:
         specifier: ^10.4.16
         version: 10.4.23(postcss@8.5.6)
@@ -44,7 +44,7 @@ importers:
         version: 5.9.3
       vite:
         specifier: ^5.0.8
-        version: 5.4.21
+        version: 5.4.21(@types/node@20.19.30)
       vue-tsc:
         specifier: ^2.0.0
         version: 2.2.12(typescript@5.9.3)
@@ -389,6 +389,9 @@ packages:
 
   '@types/lodash@4.17.23':
     resolution: {integrity: sha512-RDvF6wTulMPjrNdCoYRC8gNR880JNGT8uB+REUpC2Ns4pRqQJhGz90wh7rgdXDPpCczF3VGktDuFGVnz8zP7HA==}
+
+  '@types/node@20.19.30':
+    resolution: {integrity: sha512-WJtwWJu7UdlvzEAUm484QNg5eAoq5QR08KDNx7g45Usrs2NtOPiX8ugDqmKdXkyL03rBqU5dYNYVQetEpBHq2g==}
 
   '@types/web-bluetooth@0.0.20':
     resolution: {integrity: sha512-g9gZnnXVq7gM7v3tJCWV/qw7w+KeOlSHAhgF9RytFyifW6AF61hdT2ucrYhPq9hLs5JIryeupHV3qGk95dH9ow==}
@@ -942,6 +945,9 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
+  undici-types@6.21.0:
+    resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
+
   update-browserslist-db@1.2.3:
     resolution: {integrity: sha512-Js0m9cx+qOgDxo0eMiFGEueWztz+d4+M3rGlmKPT+T4IS/jP4ylw3Nwpu6cpTTP8R1MAC1kF4VbdLt3ARf209w==}
     hasBin: true
@@ -1229,11 +1235,16 @@ snapshots:
 
   '@types/lodash@4.17.23': {}
 
+  '@types/node@20.19.30':
+    dependencies:
+      undici-types: 6.21.0
+    optional: true
+
   '@types/web-bluetooth@0.0.20': {}
 
-  '@vitejs/plugin-vue@5.2.4(vite@5.4.21)(vue@3.5.26(typescript@5.9.3))':
+  '@vitejs/plugin-vue@5.2.4(vite@5.4.21(@types/node@20.19.30))(vue@3.5.26(typescript@5.9.3))':
     dependencies:
-      vite: 5.4.21
+      vite: 5.4.21(@types/node@20.19.30)
       vue: 3.5.26(typescript@5.9.3)
 
   '@volar/language-core@2.4.15':
@@ -1846,6 +1857,9 @@ snapshots:
 
   typescript@5.9.3: {}
 
+  undici-types@6.21.0:
+    optional: true
+
   update-browserslist-db@1.2.3(browserslist@4.28.1):
     dependencies:
       browserslist: 4.28.1
@@ -1854,12 +1868,13 @@ snapshots:
 
   util-deprecate@1.0.2: {}
 
-  vite@5.4.21:
+  vite@5.4.21(@types/node@20.19.30):
     dependencies:
       esbuild: 0.21.5
       postcss: 8.5.6
       rollup: 4.55.1
     optionalDependencies:
+      '@types/node': 20.19.30
       fsevents: 2.3.3
 
   vscode-uri@3.1.0: {}

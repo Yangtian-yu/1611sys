@@ -291,7 +291,7 @@ export class UsersController {
             message: "Something went wrong",
           },
         },
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
   }
