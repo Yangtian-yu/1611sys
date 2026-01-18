@@ -316,11 +316,52 @@ Authorization: Bearer {token}
 
 检查 JWT token 是否过期，尝试重新登录。
 
+## 🚀 Superpowers AI 编码工作流
+
+本项目已集成 **Superpowers AI 编码工作流系统**,将 AI 从代码补全工具升级为超级协作伙伴。
+
+### 核心工作流
+
+- **`/brainstorm`** - 交互式需求澄清,AI 主动提问理解需求
+- **`/plan`** - 任务分解,将复杂功能分解为 2-5 分钟小任务
+- **`/worktree`** - 创建隔离开发环境,支持并行开发
+
+### 核心技能
+
+- **Git Worktrees** - 隔离开发环境,零风险实验
+- **TDD 工作流** - 强制 RED-GREEN-REFACTOR 循环
+- **任务规划** - 详细的实现步骤和验证标准
+
+### 快速开始
+
+```bash
+# 1. 需求澄清
+/brainstorm
+
+# 2. 任务规划
+/plan
+
+# 3. 隔离开发
+/worktree feature/name
+
+# 4. TDD 开发
+# RED → GREEN → REFACTOR
+```
+
+### 文档
+
+- 📖 [完整指南](.agent/superpowers/README.md)
+- 📋 [快速参考](.agent/superpowers/QUICK-REFERENCE.md)
+- 🛠️ [技能文档](.agent/superpowers/)
+
+---
+
 ## 开发者
 
 - 产品经理：ruthless-pm skill
 - UI 设计师：ui-prompt-designer skill
 - 全栈工程师：fullstack-engineer skill
+- AI 协作伙伴：Superpowers 工作流系统
 
 ## 许可证
 
