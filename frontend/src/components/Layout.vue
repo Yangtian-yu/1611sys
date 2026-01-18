@@ -31,6 +31,12 @@ const menuItems = computed(() => {
   }
 
   items.push({
+    path: "/entertainment/snake",
+    name: "娱乐中心",
+    icon: "🎮",
+  });
+
+  items.push({
     path: "/change-password",
     name: "修改密码",
     icon: "🔑",

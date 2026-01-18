@@ -44,6 +44,12 @@ const router = createRouter({
       component: ChangePassword,
       meta: { requiresAuth: true },
     },
+    {
+      path: "/entertainment/snake",
+      name: "SnakeGame",
+      component: () => import("@/views/entertainment/SnakeGame.vue"),
+      meta: { requiresAuth: true },
+    },
   ],
 });
 
