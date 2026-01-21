@@ -1,17 +1,23 @@
 # 构建阶段
-FROM node:20-alpine AS builder
+FROM node:20-slim AS builder
 
 WORKDIR /app
 
 # 安装构建工具 (用于编译原生模块如 bcrypt)
-RUN apk add --no-cache python3 make g++ openssl-dev
+RUN apt-get update && apt-get install -y \
+    python3 \
+    make \
+    g++ \
+    openssl \
+    libssl-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 # 复制 package.json 和 lock 文件
 COPY package*.json ./
 COPY pnpm-lock.yaml* ./
 
-# 安装 pnpm
-RUN npm install -g pnpm
+# 安装 pnpm (固定版本)
+RUN npm install -g pnpm@10
 
 # 安装依赖
 RUN pnpm install --frozen-lockfile
@@ -26,12 +32,16 @@ RUN npx prisma generate
 RUN pnpm build
 
 # 生产阶段
-FROM node:20-alpine
+FROM node:20-slim
 
 WORKDIR /app
 
-# 安装运行时依赖 (bcrypt 和 Prisma 需要)
-RUN apk add --no-cache python3 make g++ openssl-dev
+# 安装运行时依赖 (bcrypt、Prisma、netcat 需要)
+RUN apt-get update && apt-get install -y \
+    openssl \
+    libssl3 \
+    netcat-openbsd \
+    && rm -rf /var/lib/apt/lists/*
 
 # 安装 pnpm
 RUN npm install -g pnpm
@@ -42,11 +52,12 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/package*.json ./
 
-# 重新构建原生模块以确保兼容性
-RUN cd node_modules/bcrypt && npm rebuild bcrypt --build-from-source
+# 复制启动脚本
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 # 暴露端口
 EXPOSE 3000
 
-# 启动应用
-CMD ["node", "dist/src/main.js"]
+# 使用 entrypoint 脚本启动
+ENTRYPOINT ["docker-entrypoint.sh"]

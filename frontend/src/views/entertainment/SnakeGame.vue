@@ -19,7 +19,6 @@ const {
   startGame,
   pauseGame,
   resumeGame,
-  restartGame,
   changeDirection,
 } = useSnakeGame(config);
 

@@ -4,7 +4,6 @@ import type {
   Direction,
   GameState,
   GameConfig,
-  GameStatus,
 } from "../types/game";
 
 export function useSnakeGame(config: GameConfig) {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { GameState } from "../../types/game";
 
-const props = defineProps<{
+defineProps<{
   gameState: GameState;
 }>();
 
