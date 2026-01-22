@@ -1,14 +1,18 @@
 # 构建阶段
 FROM node:20-alpine AS builder
 
+# 配置 npm 国内镜像源
+RUN npm config set registry https://registry.npmmirror.com
+
 WORKDIR /app
 
 # 复制 package.json 和 lock 文件
 COPY package*.json ./
 COPY pnpm-lock.yaml* ./
 
-# 安装 pnpm
-RUN npm install -g pnpm
+# 安装 pnpm 并配置镜像源
+RUN npm install -g pnpm && \
+    pnpm config set registry https://registry.npmmirror.com
 
 # 安装依赖
 RUN pnpm install --frozen-lockfile
@@ -17,7 +21,8 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 
 # 设置环境变量（构建时使用）
-ENV VITE_API_BASE_URL=http://localhost:3000/api
+# 生产环境需要修改为实际的服务器地址
+ENV VITE_API_BASE_URL=http://47.95.43.38/api
 
 # 构建应用
 RUN pnpm build
