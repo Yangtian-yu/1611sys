@@ -20,9 +20,10 @@ async function bootstrap() {
   app.setGlobalPrefix("api");
 
   const port = process.env.PORT || 3000;
-  await app.listen(port);
+  // 显式监听 0.0.0.0 以支持容器间通信
+  await app.listen(port, "0.0.0.0");
 
-  console.log(`🚀 后端服务已启动: http://localhost:${port}/api`);
+  console.log(`🚀 后端服务已启动: http://0.0.0.0:${port}/api`);
 }
 
 bootstrap();
