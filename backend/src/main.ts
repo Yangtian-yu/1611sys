@@ -1,12 +1,25 @@
 import { NestFactory } from "@nestjs/core";
 import { ValidationPipe } from "@nestjs/common";
 import { AppModule } from "./app.module";
+import { HttpExceptionFilter } from "./common/filters/http-exception.filter";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // 启用全局异常过滤器
+  app.useGlobalFilters(new HttpExceptionFilter());
+
   // 启用全局验证管道
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true, // 自动移除未定义的属性
+      forbidNonWhitelisted: false, // 不抛出错误，只是忽略
+      transform: true, // 自动转换类型
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+    })
+  );
 
   // 启用 CORS - 支持所有本地开发环境
   app.enableCors({

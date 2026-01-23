@@ -83,6 +83,7 @@ class HttpClient {
 
   /**
    * 统一错误处理
+   * 约定：后端返回的错误优先使用后端的 message，网络错误等使用前端定义的友好提示
    */
   private handleError(error: unknown): ApiError {
     // 请求被取消
@@ -95,23 +96,52 @@ class HttpClient {
     }
 
     const status = error.response?.status;
-    const message = error.response?.data?.message || error.message;
+    // 优先使用后端返回的 message
+    const backendMessage = error.response?.data?.message;
 
-    // 网络错误
+    // 网络错误（无法连接到服务器）
     if (error.code === "ERR_NETWORK") {
       return new ApiError(
         ErrorCode.NETWORK_ERROR,
-        "网络连接失败，请检查网络",
+        "无法连接到服务器，请检查网络",
         status,
       );
     }
 
-    // 超时
+    // 请求超时
     if (error.code === "ECONNABORTED" || error.message.includes("timeout")) {
       return new ApiError(ErrorCode.TIMEOUT, "请求超时，请重试", status);
     }
 
-    // HTTP 状态码错误
+    // 如果后端返回了具体的错误信息，直接使用
+    if (backendMessage) {
+      // 根据状态码确定错误类型
+      let errorCode = ErrorCode.UNKNOWN;
+      switch (status) {
+        case 401:
+          errorCode = ErrorCode.UNAUTHORIZED;
+          break;
+        case 403:
+          errorCode = ErrorCode.FORBIDDEN;
+          break;
+        case 404:
+          errorCode = ErrorCode.NOT_FOUND;
+          break;
+        case 409:
+          errorCode = ErrorCode.CONFLICT;
+          break;
+        case 422:
+          errorCode = ErrorCode.VALIDATION_ERROR;
+          break;
+        default:
+          if (status && status >= 500) {
+            errorCode = ErrorCode.SERVER_ERROR;
+          }
+      }
+      return new ApiError(errorCode, backendMessage, status);
+    }
+
+    // 后端没有返回message，使用前端默认提示
     switch (status) {
       case 401:
         return new ApiError(
@@ -120,15 +150,15 @@ class HttpClient {
           status,
         );
       case 403:
-        return new ApiError(ErrorCode.FORBIDDEN, "无权限访问", status);
+        return new ApiError(ErrorCode.FORBIDDEN, "您没有权限执行此操作", status);
       case 404:
-        return new ApiError(ErrorCode.NOT_FOUND, "资源不存在", status);
+        return new ApiError(ErrorCode.NOT_FOUND, "请求的资源不存在", status);
       case 409:
-        return new ApiError(ErrorCode.CONFLICT, message || "数据冲突", status);
+        return new ApiError(ErrorCode.CONFLICT, "数据冲突，请刷新后重试", status);
       case 422:
         return new ApiError(
           ErrorCode.VALIDATION_ERROR,
-          message || "数据验证失败",
+          "数据验证失败，请检查输入",
           status,
           error.response?.data,
         );
@@ -140,7 +170,7 @@ class HttpClient {
             status,
           );
         }
-        return new ApiError(ErrorCode.UNKNOWN, message || "请求失败", status);
+        return new ApiError(ErrorCode.UNKNOWN, "请求失败，请重试", status);
     }
   }
 

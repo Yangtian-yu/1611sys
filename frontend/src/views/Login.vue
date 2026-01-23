@@ -26,7 +26,8 @@ const handleLogin = async () => {
     ElMessage.success("登录成功");
     router.push("/duty");
   } catch (error: any) {
-    ElMessage.error(error.response?.data?.message || "登录失败");
+    // HTTP 拦截器已经显示了错误，这里不需要重复显示
+    console.error("登录失败:", error);
   } finally {
     loading.value = false;
   }
@@ -86,24 +87,9 @@ const handleLogin = async () => {
           :disabled="loading"
         >
           <span v-if="!loading">登录</span>
-          <span v-else>登录中...</span>
+          <span v-else">登录中...</span>
         </button>
       </form>
-
-      <!-- 测试账号提示 -->
-      <div class="test-accounts">
-        <p class="test-title">测试账号</p>
-        <div class="test-items">
-          <div class="test-item">
-            <span class="test-label">管理员</span>
-            <span class="test-value">admin / Admin@1611</span>
-          </div>
-          <div class="test-item">
-            <span class="test-label">员工</span>
-            <span class="test-value">李明 / password</span>
-          </div>
-        </div>
-      </div>
     </div>
 
     <!-- 版权信息 -->
@@ -256,58 +242,6 @@ const handleLogin = async () => {
 .login-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
-}
-
-/* 测试账号 */
-.test-accounts {
-  margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  animation: fadeInUp 0.8s ease-out 0.6s both;
-}
-
-.test-title {
-  color: var(--color-text-muted);
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 1rem;
-  font-weight: 600;
-}
-
-.test-items {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.test-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.75rem 1rem;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: all 0.3s ease;
-}
-
-.test-item:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.1);
-  transform: translateX(4px);
-}
-
-.test-label {
-  color: var(--color-text-secondary);
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-.test-value {
-  color: var(--color-text-primary);
-  font-size: 0.875rem;
-  font-family: "Courier New", monospace;
 }
 
 /* 页脚 */
