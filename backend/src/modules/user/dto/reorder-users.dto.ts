@@ -1,7 +1,7 @@
-import { IsArray, IsNumber } from "class-validator";
+import { IsArray, IsString } from "class-validator";
 
 export class ReorderUsersDto {
   @IsArray()
-  @IsNumber({}, { each: true })
-  userIds: number[];
+  @IsString({ each: true })
+  userIds: string[];
 }

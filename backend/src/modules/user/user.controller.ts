@@ -36,14 +36,14 @@ export class UserController {
 
   @Put(":id")
   update(
-    @Param("id", ParseIntPipe) id: number,
+    @Param("id") id: string,
     @Body() updateUserDto: UpdateUserDto
   ) {
     return this.userService.update(id, updateUserDto);
   }
 
   @Delete(":id")
-  remove(@Param("id", ParseIntPipe) id: number) {
+  remove(@Param("id") id: string) {
     return this.userService.remove(id);
   }
 
@@ -54,7 +54,7 @@ export class UserController {
 
   @Post(":id/reset-password")
   resetPassword(
-    @Param("id", ParseIntPipe) id: number,
+    @Param("id") id: string,
     @Body() resetPasswordDto: ResetPasswordDto
   ) {
     return this.userService.resetPassword(id, resetPasswordDto);

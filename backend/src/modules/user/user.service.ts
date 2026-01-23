@@ -83,10 +83,10 @@ export class UserService {
     };
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto) {
     // 检查用户是否存在
     const user = await this.prisma.user.findUnique({
-      where: { id: String(id) },
+      where: { id },
     });
     if (!user) {
       throw new NotFoundException("用户不存在");
@@ -104,7 +104,7 @@ export class UserService {
 
     // 更新用户
     const updatedUser = await this.prisma.user.update({
-      where: { id: String(id) },
+      where: { id },
       data: updateUserDto,
       select: {
         id: true,
@@ -124,10 +124,10 @@ export class UserService {
     };
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     // 检查用户是否存在
     const user = await this.prisma.user.findUnique({
-      where: { id: String(id) },
+      where: { id },
     });
     if (!user) {
       throw new NotFoundException("用户不存在");
@@ -139,7 +139,7 @@ export class UserService {
     }
 
     // 删除用户
-    await this.prisma.user.delete({ where: { id: String(id) } });
+    await this.prisma.user.delete({ where: { id } });
 
     return {
       success: true,
@@ -153,7 +153,7 @@ export class UserService {
     // 批量更新用户顺序
     const updatePromises = userIds.map((userId, index) =>
       this.prisma.user.update({
-        where: { id: String(userId) },
+        where: { id: userId },
         data: { orderIndex: index + 1 },
       })
     );
@@ -166,10 +166,10 @@ export class UserService {
     };
   }
 
-  async resetPassword(id: number, resetPasswordDto: ResetPasswordDto) {
+  async resetPassword(id: string, resetPasswordDto: ResetPasswordDto) {
     // 检查用户是否存在
     const user = await this.prisma.user.findUnique({
-      where: { id: String(id) },
+      where: { id },
     });
     if (!user) {
       throw new NotFoundException("用户不存在");
@@ -180,7 +180,7 @@ export class UserService {
 
     // 更新密码
     await this.prisma.user.update({
-      where: { id: String(id) },
+      where: { id },
       data: { password: hashedPassword },
     });
 

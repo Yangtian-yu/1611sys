@@ -29,6 +29,6 @@ export class AuthController {
     @Request() req,
     @Body() changePasswordDto: ChangePasswordDto
   ) {
-    return this.authService.changePassword(req.user.userId, changePasswordDto);
+    return this.authService.changePassword(req.user.id, changePasswordDto);
   }
 }

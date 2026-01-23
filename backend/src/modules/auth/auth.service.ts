@@ -49,8 +49,7 @@ export class AuthService {
   }
 
   async validateUser(userId: string) {
-    console.log('[AuthService] validateUser 被调用, userId:', userId);
-    const user = await this.prisma.user.findUnique({
+    return this.prisma.user.findUnique({
       where: { id: userId },
       select: {
         id: true,
@@ -59,8 +58,6 @@ export class AuthService {
         role: true,
       },
     });
-    console.log('[AuthService] 查询到的用户:', JSON.stringify(user));
-    return user;
   }
 
   async changePassword(userId: string, changePasswordDto: ChangePasswordDto) {
