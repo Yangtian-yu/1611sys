@@ -237,7 +237,7 @@ df -h
 
 ```bash
 # 下载到本地
-scp root@47.95.43.38:~/1611sys/backups/*.gz ./local-backups/
+scp root@<YOUR_SERVER_IP>:~/1611sys/backups/*.gz ./local-backups/
 
 # 或上传到云存储（示例：阿里云 OSS）
 # ossutil cp backups/*.gz oss://your-bucket/backups/

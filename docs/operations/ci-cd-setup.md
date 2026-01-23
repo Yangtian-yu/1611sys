@@ -21,7 +21,7 @@
 
 | 名称 | 值 | 说明 |
 |------|----|----|
-| `SERVER_HOST` | `47.95.43.38` | 服务器 IP 地址 |
+| `SERVER_HOST` | `<YOUR_SERVER_IP>` | 服务器 IP 地址 |
 | `SERVER_USER` | `root` | SSH 用户名 |
 | `SSH_PRIVATE_KEY` | `你的私钥` | SSH 私钥（见下方） |
 
@@ -58,7 +58,7 @@ chmod 700 ~/.ssh
 在本地测试连接：
 
 ```bash
-ssh -i ~/.ssh/github_deploy root@47.95.43.38
+ssh -i ~/.ssh/github_deploy root@<YOUR_SERVER_IP>
 ```
 
 如果能正常连接，说明配置成功。

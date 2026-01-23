@@ -37,7 +37,7 @@ ls -lh backups/
 curl http://localhost:3000/api/health
 
 # 或在生产环境
-curl http://47.95.43.38/api/health
+curl http://<YOUR_SERVER_IP>/api/health
 ```
 
 返回示例：
@@ -82,7 +82,7 @@ git push origin v1.0.1
 
 ### 日常检查（每天）
 
-- [ ] 服务健康状态：`curl http://47.95.43.38/api/health`
+- [ ] 服务健康状态：`curl http://<YOUR_SERVER_IP>/api/health`
 - [ ] 数据库备份：`ls -lt ~/1611sys/backups/ | head -2`
 - [ ] 磁盘空间：`df -h`
 - [ ] Docker 容器状态：`docker compose ps`
