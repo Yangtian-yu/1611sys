@@ -41,3 +41,7 @@ Thumbs.db
 *.sql
 *.sqlite
 *.db
+
+# 备份文件和日志
+backups/
+logs/
