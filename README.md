@@ -1,368 +1,125 @@
-# 1611 值日系统
+# 🗓️ 1611 值日系统
 
 办公室值日管理系统 - 自动化排班与邮件提醒
 
-## 项目简介
-
-1611 值日系统是一个专为办公室值日管理设计的 Web 应用，支持自动轮流排班、值日查看等功能。
-
-### 核心功能（第一版）
-
-- ✅ 用户登录认证（JWT）
-- ✅ 查看本周值日人员
-- ✅ 自动轮流制排班
-- ⏳ 员工管理（后续迭代）
-- ⏳ 邮件通知（后续迭代）
-
-## 技术栈
-
-### 前端
-
-- Vue 3 + TypeScript
-- Vite 5
-- Element Plus
-- Tailwind CSS
-- Pinia (状态管理)
-- Vue Router 4
-- Axios
-
-### 后端
-
-- Nest.js 10
-- Prisma (ORM)
-- PostgreSQL
-- JWT 认证
-- bcrypt (密码加密)
-
-## 项目结构
-
-```
-testProject/
-├── backend/                # 后端项目
-│   ├── src/
-│   │   ├── modules/
-│   │   │   ├── auth/      # 认证模块
-│   │   │   └── duty/      # 值日模块
-│   │   ├── prisma/        # Prisma 服务
-│   │   ├── app.module.ts
-│   │   └── main.ts
-│   ├── prisma/
-│   │   ├── schema.prisma  # 数据库 Schema
-│   │   └── seed.ts        # 种子数据
-│   ├── package.json
-│   └── .env
-│
-└── frontend/               # 前端项目
-    ├── src/
-    │   ├── views/         # 页面组件
-    │   ├── stores/        # Pinia stores
-    │   ├── router/        # 路由配置
-    │   ├── api/           # API 接口
-    │   ├── types/         # TypeScript 类型
-    │   ├── App.vue
-    │   └── main.ts
-    ├── package.json
-    └── .env
-```
-
-## 快速开始
-
-### 方式一：Docker 一键启动（推荐）
-
-**前置要求：**
-
-- Docker Desktop 已安装并运行
-
-**启动步骤：**
-
-```bash
-# Windows 用户
-start.bat
-
-# Linux/Mac 用户
-chmod +x start.sh
-./start.sh
-```
-
-**访问应用：**
-
-- 前端：http://localhost
-- 后端 API：http://localhost:3000/api
-
-**Docker 常用命令：**
-
-```bash
-# 查看日志
-docker-compose logs -f
-
-# 停止服务
-docker-compose down
-
-# 重新构建
-docker-compose build
-
-# 重启服务
-docker-compose restart
-```
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-47.4%25-blue)](https://www.typescriptlang.org/)
+[![Vue](https://img.shields.io/badge/Vue-40.9%25-green)](https://vuejs.org/)
 
 ---
 
-### 方式二：本地开发模式
+## ✨ 功能特性
 
-### 前置要求
+- 🔐 **用户认证** - JWT 登录认证，管理员/员工角色
+- 📅 **自动排班** - 按顺序轮流制，每周自动生成值日安排
+- 👥 **员工管理** - CRUD 操作，拖拽调整值日顺序
+- 📧 **邮件通知** - 每周最后一个工作日自动发送通知
+- 🏥 **健康检查** - 服务健康监控接口
+- 💾 **自动备份** - 数据库每天自动备份
+- 🚀 **CI/CD** - 自动化构建和部署
 
-- Node.js 20+
-- pnpm (推荐) 或 npm
-- PostgreSQL 数据库
+---
 
-### 1. 安装依赖
+## 🛠️ 技术栈
 
-```bash
-# 安装后端依赖
-cd backend
-pnpm install
+**前端**: Vue 3 + TypeScript + Vite + Element Plus + Tailwind CSS
+**后端**: NestJS + Prisma + PostgreSQL + JWT
+**部署**: Docker + Docker Compose + GitHub Actions
 
-# 安装前端依赖
-cd ../frontend
-pnpm install
-```
+---
 
-### 2. 配置数据库
+## 🚀 快速开始
 
-编辑 `backend/.env` 文件：
-
-```env
-DATABASE_URL="postgresql://用户名:密码@localhost:5432/duty_system"
-JWT_SECRET="your-secret-key-change-in-production-1611"
-PORT=3000
-```
-
-### 3. 初始化数据库
+### Docker 一键启动（推荐）
 
 ```bash
-cd backend
+# 克隆项目
+git clone https://github.com/Yangtian-yu/1611sys.git
+cd 1611sys
 
-# 生成 Prisma Client
+# 配置环境变量
+cp .env.example .env
+# 编辑 .env 填入数据库、邮箱等配置
+
+# 启动服务
+docker compose up -d
+
+# 访问应用
+# 前端：http://localhost
+# 后端API：http://localhost:3000/api
+```
+
+### 本地开发模式
+
+**前置要求**: Node.js 20+, pnpm, PostgreSQL
+
+```bash
+# 安装依赖
+cd backend && pnpm install
+cd ../frontend && pnpm install
+
+# 配置数据库（编辑 backend/.env）
+DATABASE_URL="postgresql://user:password@localhost:5432/duty_system"
+
+# 初始化数据库
+cd backend
 pnpm prisma:generate
-
-# 运行数据库迁移
 pnpm prisma:migrate
-
-# 初始化种子数据（创建管理员和测试账号）
 pnpm prisma:seed
+
+# 启动服务
+pnpm start:dev  # 后端
+cd ../frontend && pnpm dev  # 前端
 ```
-
-### 4. 启动开发服务器
-
-```bash
-# 启动后端（在 backend 目录）
-pnpm start:dev
-
-# 启动前端（在 frontend 目录，新开一个终端）
-cd ../frontend
-pnpm dev
-```
-
-### 5. 访问应用
-
-- 前端：http://localhost:5173
-- 后端 API：http://localhost:3000/api
-
-## 测试账号
-
-### 管理员账号
-
-- 用户名：`admin`
-- 密码：`Admin@1611`
-
-### 普通员工账号
-
-- 用户名：`李明` / `王芳` / `张三` / `李四`
-- 密码：`123456`
-
-## API 接口
-
-### 认证接口
-
-#### POST /api/auth/login
-
-登录接口
-
-**请求：**
-
-```json
-{
-  "username": "admin",
-  "password": "Admin@1611"
-}
-```
-
-**响应：**
-
-```json
-{
-  "success": true,
-  "data": {
-    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-    "user": {
-      "id": "uuid",
-      "username": "admin",
-      "role": "ADMIN"
-    }
-  }
-}
-```
-
-### 值日接口
-
-#### GET /api/duty/current
-
-获取本周值日安排（需要认证）
-
-**请求头：**
-
-```
-Authorization: Bearer {token}
-```
-
-**响应：**
-
-```json
-{
-  "success": true,
-  "data": {
-    "weekStartDate": "2026-01-13",
-    "dutyUsers": [
-      {
-        "id": "uuid1",
-        "username": "李明",
-        "email": "liming@qq.com"
-      },
-      {
-        "id": "uuid2",
-        "username": "王芳",
-        "email": "wangfang@qq.com"
-      }
-    ]
-  }
-}
-```
-
-## 数据库 Schema
-
-### users 表
-
-- id: UUID (主键)
-- username: String (唯一)
-- password: String (bcrypt 加密)
-- email: String
-- role: Enum (ADMIN | EMPLOYEE)
-- orderIndex: Integer (值日顺序)
-- createdAt: DateTime
-- updatedAt: DateTime
-
-### duty_schedules 表
-
-- id: UUID (主键)
-- weekStartDate: DateTime (周一日期)
-- dutyUserIds: String[] (值日人员 ID 数组)
-- isManual: Boolean (是否手动调整)
-- createdAt: DateTime
-
-## 排班逻辑
-
-系统采用**轮流制**自动排班：
-
-1. 每周一自动生成本周排班
-2. 按员工的 `orderIndex` 顺序轮流
-3. 每周取 2 个员工值日
-4. 示例（假设有 15 个员工）：
-   - 第 1 周：员工 1 + 员工 2
-   - 第 2 周：员工 3 + 员工 4
-   - ...
-   - 第 8 周：员工 15 + 员工 1（循环）
-
-## 后续迭代计划
-
-### 第二版：员工管理
-
-- [ ] 员工 CRUD 功能
-- [ ] 拖拽调整员工顺序
-- [ ] 密码管理
-
-### 第三版：邮件通知
-
-- [ ] 邮件模板编辑
-- [ ] 定时发送邮件（每周五下午 4 点）
-- [ ] SMTP 配置
-
-### 第四版：高级功能
-
-- [ ] 手动调整本周值日
-- [ ] 历史记录查看
-- [ ] 数据统计
-
-## 常见问题
-
-### 1. 数据库连接失败？
-
-检查 `backend/.env` 中的 `DATABASE_URL` 配置是否正确，确保 PostgreSQL 服务已启动。
-
-### 2. 前端无法访问后端 API？
-
-确保后端服务已启动（http://localhost:3000），检查 `frontend/.env` 中的 `VITE_API_BASE_URL` 配置。
-
-### 3. 登录后提示 401 错误？
-
-检查 JWT token 是否过期，尝试重新登录。
-
-## 🚀 Superpowers AI 编码工作流
-
-本项目已集成 **Superpowers AI 编码工作流系统**,将 AI 从代码补全工具升级为超级协作伙伴。
-
-### 核心工作流
-
-- **`/brainstorm`** - 交互式需求澄清,AI 主动提问理解需求
-- **`/plan`** - 任务分解,将复杂功能分解为 2-5 分钟小任务
-- **`/worktree`** - 创建隔离开发环境,支持并行开发
-
-### 核心技能
-
-- **Git Worktrees** - 隔离开发环境,零风险实验
-- **TDD 工作流** - 强制 RED-GREEN-REFACTOR 循环
-- **任务规划** - 详细的实现步骤和验证标准
-
-### 快速开始
-
-```bash
-# 1. 需求澄清
-/brainstorm
-
-# 2. 任务规划
-/plan
-
-# 3. 隔离开发
-/worktree feature/name
-
-# 4. TDD 开发
-# RED → GREEN → REFACTOR
-```
-
-### 文档
-
-- 📖 [完整指南](.agent/superpowers/README.md)
-- 📋 [快速参考](.agent/superpowers/QUICK-REFERENCE.md)
-- 🛠️ [技能文档](.agent/superpowers/)
 
 ---
 
-## 开发者
+## 🔑 测试账号
 
-- 产品经理：ruthless-pm skill
-- UI 设计师：ui-prompt-designer skill
-- 全栈工程师：fullstack-engineer skill
-- AI 协作伙伴：Superpowers 工作流系统
+**管理员**: `admin` / `Admin@1611`
+**员工**: `李明` / `123456`
 
-## 许可证
+---
 
-MIT License
+## 📚 文档
+
+| 文档 | 说明 |
+|------|------|
+| [快速开始](./docs/开发文档/快速开始.md) | 详细的安装和开发指南 |
+| [API 文档](./docs/开发文档/API文档.md) | 接口文档和使用说明 |
+| [部署指南](./docs/部署文档/部署日志-2026-01-22.md) | 生产环境部署记录 |
+| [运维手册](./docs/运维文档/运维总览.md) | 备份、监控、CI/CD 配置 |
+| [产品规格](./docs/开发文档/产品规格.md) | 功能需求和设计文档 |
+
+完整文档导航：[📚 文档中心](./docs/README.md)
+
+---
+
+## 🤝 参与贡献
+
+欢迎提交 Issue 和 Pull Request！
+
+1. Fork 本仓库
+2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交改动 (`git commit -m 'feat: Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 提交 Pull Request
+
+详见：[贡献指南](./docs/开发文档/贡献指南.md)
+
+---
+
+## 📄 开源协议
+
+本项目采用 [MIT](./LICENSE) 协议开源。
+
+---
+
+## 📮 联系方式
+
+- 项目地址：https://github.com/Yangtian-yu/1611sys
+- 问题反馈：[GitHub Issues](https://github.com/Yangtianyu/1611sys/issues)
+
+---
+
+**Made with ❤️ by Yangtian-yu & Claude**
